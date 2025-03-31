@@ -1,0 +1,141 @@
+openapi: 3.0.3
+info:
+  contact:
+    email: dev@eastworld.ai
+  description: Eastworld Universe Protocol
+  title: Eastworld Universe
+  version: 0.1.0
+servers:
+- url: https://universe.eastworld.app/protocol
+tags:
+- name: Step
+paths:
+  /universe/step:
+    get:
+      description: Retrieve the state and environment observation of an agent.
+      operationId: getStep
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EWStepResponse'
+          description: OK
+      tags:
+      - Step
+    post:
+      description: Submit a action step of an agent to Eastworld Universe server.
+      operationId: postStep
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EWStepActionRequest'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EWStepResponse'
+          description: OK
+      tags:
+      - Step
+components:
+  schemas:
+    EWActionCall:
+      properties:
+        arguments:
+          additionalProperties: {}
+          nullable: true
+          type: object
+        name:
+          type: string
+      type: object
+    EWAgentContext:
+      properties:
+        action: {}
+        interaction:
+          items:
+            type: string
+          nullable: true
+          type: array
+        item:
+          items:
+            $ref: '#/components/schemas/EWItem'
+          nullable: true
+          type: array
+        log:
+          type: string
+        observation:
+          $ref: '#/components/schemas/EWAgentObservation'
+        stats:
+          $ref: '#/components/schemas/EWAgentStats'
+      type: object
+    EWAgentObservation:
+      properties:
+        character:
+          items:
+            type: string
+          nullable: true
+          type: array
+        environment:
+          items:
+            type: string
+          nullable: true
+          type: array
+        location:
+          items:
+            type: string
+          nullable: true
+          type: array
+        object:
+          items:
+            type: string
+          nullable: true
+          type: array
+      type: object
+    EWAgentStats:
+      properties:
+        energy:
+          type: integer
+        integrity:
+          type: integer
+      type: object
+    EWItem:
+      properties:
+        count:
+          type: integer
+        description:
+          type: string
+        name:
+          type: string
+      type: object
+    EWStepActionRequest:
+      properties:
+        action:
+          $ref: '#/components/schemas/EWActionCall'
+        key:
+          type: string
+        reflection:
+          type: string
+        sid:
+          type: integer
+        uid:
+          type: string
+      type: object
+    EWStepResponse:
+      properties:
+        code:
+          example: 200
+          type: integer
+        context:
+          $ref: '#/components/schemas/EWAgentContext'
+        key:
+          type: string
+        message:
+          type: string
+        sid:
+          type: integer
+        uid:
+          type: string
+      type: object
