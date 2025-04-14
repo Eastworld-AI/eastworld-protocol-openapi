@@ -4,9 +4,12 @@ info:
     email: dev@eastworld.ai
   description: Eastworld Universe Protocol
   title: Eastworld Universe
-  version: 0.1.0
+  version: 0.1.1
 servers:
 - url: https://universe.eastworld.app/protocol
+security:
+- basicAuth:
+  - basicAuth
 tags:
 - name: Step
 paths:
@@ -70,6 +73,11 @@ components:
           $ref: '#/components/schemas/EWAgentObservation'
         stats:
           $ref: '#/components/schemas/EWAgentStats'
+        telemetry:
+          items:
+            type: string
+          nullable: true
+          type: array
       type: object
     EWAgentObservation:
       properties:
@@ -89,6 +97,11 @@ components:
           nullable: true
           type: array
         object:
+          items:
+            type: string
+          nullable: true
+          type: array
+        obstacle:
           items:
             type: string
           nullable: true
@@ -139,3 +152,9 @@ components:
         uid:
           type: string
       type: object
+  securitySchemes:
+    basicAuth:
+      description: ""
+      scheme: basic
+      type: http
+
